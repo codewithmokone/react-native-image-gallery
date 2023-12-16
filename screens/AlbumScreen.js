@@ -3,6 +3,7 @@ import { View, Text, Button, FlatList, Image, StyleSheet, TouchableOpacity, Moda
 import * as MediaLibrary from 'expo-media-library';
 import * as SQLite from 'expo-sqlite';
 import * as FileSystem from 'expo-file-system';
+import * as Sharing from 'expo-sharing';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 
@@ -98,6 +99,17 @@ const AlbumScreen = () => {
         }
     };
 
+    const shareImage = async () => {
+        if (selectedImage) {
+            try {
+                await Sharing.shareAsync(selectedImage.image_path);
+            } catch (error) {
+                console.error('Error sharing image:', error.message);
+            }
+        }
+    };
+
+
     // Function for viewing the modal
     const openFullView = (item) => {
         setSelectedImage(item);
@@ -132,6 +144,9 @@ const AlbumScreen = () => {
             )}
             <Modal visible={selectedImage !== null} transparent={true}>
                 <View style={styles.modalContainer}>
+                    <TouchableOpacity style={{top:50,left:160}} onPress={() => setImageMetadata(imageMetadata)}>
+                        <Text style={{ marginHorizontal: 120 }}><Icon name="ios-information-circle" size={30} color="#4F8EF7" /></Text>
+                    </TouchableOpacity>
                     {selectedImage && (
                         <Image
                             style={styles.fullImage}
@@ -155,10 +170,10 @@ const AlbumScreen = () => {
                         <TouchableOpacity onPress={deleteSelectedImage}>
                             <Text style={styles.closeText}><Icon name="ios-trash-bin" size={30} color="#4F8EF7" /></Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => setImageMetadata(imageMetadata)}>
-                            <Text style={{marginHorizontal:120}}><Icon name="ios-information-circle" size={30} color="#4F8EF7" /></Text>
+                        <TouchableOpacity style={{marginHorizontal:130}} onPress={shareImage}>
+                            <Text style={styles.closeText}><Icon name="share" size={30} color="#4F8EF7" /></Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.closeButton} onPress={closeFullView}>
+                        <TouchableOpacity onPress={closeFullView}>
                             <Text style={styles.closeText}><Icon name="ios-close-sharp" size={30} color="#4F8EF7" /></Text>
                         </TouchableOpacity>
                     </View>
@@ -198,7 +213,7 @@ const styles = StyleSheet.create({
     },
     ModalButtons: {
         flexDirection: 'row',
-        marginBotton: 30,
+        bottom: 40
     },
     closeText: {
         color: '#fff',

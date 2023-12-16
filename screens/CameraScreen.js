@@ -47,9 +47,10 @@ const CameraScreen = () => {
                 setLocationPermission(false);
             }
         };
-        
+
         getPermissions();
     }, []);
+
 
     // Function for clearing database structure.
     const clearDatabase = () => {
@@ -76,6 +77,7 @@ const CameraScreen = () => {
 
     // Function to save image path to SQLite
     const saveImageToDB = async (imagePath, latitude, longitude) => {
+
         createImagesTable();
         db.transaction(tx => {
             tx.executeSql(
@@ -139,9 +141,12 @@ const CameraScreen = () => {
         return (
             <SafeAreaView style={styles.container}>
                 <Image style={styles.preview} source={{ uri: photo.uri }} />
-                <Button title="Share" onPress={sharePic} />
-                {hasMediaLibraryPermission ? <Button title="save" onPress={savePhoto} /> : null}
-                <Button title="Discard" onPress={() => setPhoto(null)} />
+                <View style={{flexDirection:'row',justifyContent:'space-between',width:300}}>
+                    <Icon name="ios-share-outline" size={30} color="#4F8EF7" onPress={sharePic}></Icon>
+                    {hasMediaLibraryPermission ? <Icon name="ios-save" size={30} color="#4F8EF7" onPress={savePhoto}></Icon> : null}
+                    {/* <Button title="Discard" onPress={() => setPhoto(null)} /> */}
+                    <Icon name="ios-close-sharp" size={30} color="#4F8EF7" onPress={sharePic}></Icon>
+                </View>
             </SafeAreaView>
         )
     }
@@ -149,8 +154,8 @@ const CameraScreen = () => {
     return (
         <Camera style={styles.container} ref={cameraRef}>
             <View style={styles.buttonContainer}>
-                <TouchableOpacity onPress={takePic}>
-                <Icon name="ios-camera" size={30} color="#4F8EF7" />
+                <TouchableOpacity style={{ borderWidth: 1, borderRadius: 40, borderColor: '#4F8EF7' }} onPress={takePic}>
+                    <Icon name="ios-camera" size={30} color="#4F8EF7" />
                 </TouchableOpacity>
                 {/* <Button  onPress={takePic}><Icon name="ios-albums" size={30} color="#4F8EF7" /></Button> */}
             </View>
