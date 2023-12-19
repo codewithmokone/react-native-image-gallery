@@ -154,7 +154,7 @@ const CameraScreen = () => {
     return (
         <Camera style={styles.container} ref={cameraRef}>
             <View style={styles.buttonContainer}>
-                <TouchableOpacity style={{ borderWidth: 1, borderRadius: 40, borderColor: '#4F8EF7' }} onPress={takePic}>
+                <TouchableOpacity onPress={takePic}>
                     <Icon name="ios-camera" size={30} color="#4F8EF7" />
                 </TouchableOpacity>
                 {/* <Button  onPress={takePic}><Icon name="ios-albums" size={30} color="#4F8EF7" /></Button> */}
